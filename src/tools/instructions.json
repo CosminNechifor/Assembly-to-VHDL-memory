@@ -1,0 +1,32 @@
+{
+  "TypeR": [
+    {
+      "name": "ADD",
+      "codification": "00000000"
+    },
+    {
+      "name": "XOR",
+      "codification": "00000001"
+    }
+  ],
+  "TypeI": [
+    {
+      "name": "ADDI",
+      "codification": "10001000"
+    },
+    {
+      "name": "SUBI",
+      "codification": "10001001"
+    }
+  ],
+  "TypeJ": [
+    {
+      "name": "JMP",
+      "codification": "11111110"
+    },
+    {
+      "name": "JMPR",
+      "codification": "11111111"
+    }
+  ]
+}
