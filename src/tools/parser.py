@@ -1,14 +1,15 @@
 import json
-
-
-def createInstruction(instructions, type):
-    pass
+from src.model.Instruction import Instruction
 
 
 
 def getInstructions():
     data = json.loads(open("instructions.json").read())
-    return data
-
-if __name__ == '__main__':
-    print(getInstructions())
+    instructionList = []
+    for typeR in data['TypeR']:
+        instructionList.append(Instruction('R', typeR['name'], typeR['codification']))
+    for typeI in data['TypeI']:
+        instructionList.append(Instruction('I', typeI['name'], typeI['codification']))
+    for typeJ in data['TypeJ']:
+        instructionList.append(Instruction('J', typeI['name'], typeI['codification']))
+    return instructionList
