@@ -9,8 +9,10 @@ def createInstructionTypeI(arg0, arg1, arg2):
     bin16 = lambda x: ''.join(reversed([str((x >> i) & 1) for i in range(16)]))
     return getRegBinaryAddress(arg0) + getRegBinaryAddress(arg1) + bin16(int(arg2))
 
-def createInstructionTypeJ():
+def createInstructionTypeJ(arg1):
     pass
+
+
 
 
 # converts text in window to binary code
@@ -19,7 +21,8 @@ def convertAssemblyToBinary(assemblyCode, riscInstructions):
     for i in assemblyCode:
         # 0 -> Instruction type
         # 1-> Instruction coodification
-        instructionArray = i.split()
+        instructionArray = i.split(' ')
+        print(instructionArray)
         instruction = riscInstructions[instructionArray[0]]
         print(instruction[0])
         if instruction[0] == 'R':
@@ -42,6 +45,9 @@ def convertAssemblyToBinary(assemblyCode, riscInstructions):
                                                   .replace(',', ''))
             binary = instruction[1] + str(registerCode)
             binaryList.append(binary)
+
+        if instruction[0] == 'J':
+
 
     return binaryList
 
@@ -72,5 +78,4 @@ def isRegister(register):
 
 
 if __name__ == '__main__':
-    print(getRegBinaryAddress('r7'))
-    print(createInstructionTypeI('r1', 'r2', '100'))
+    pass
