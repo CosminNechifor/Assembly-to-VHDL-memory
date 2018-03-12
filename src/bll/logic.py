@@ -1,18 +1,6 @@
 
 
 # creates Instructions of type R
-def createInstructionTypeR(arg0, arg1, arg2):
-    return getRegBinaryAddress(arg0) + getRegBinaryAddress(arg1) + getRegBinaryAddress(arg2)
-
-# creates Instructions of type I
-def createInstructionTypeI(arg0, arg1, arg2):
-    bin16 = lambda x: ''.join(reversed([str((x >> i) & 1) for i in range(16)]))
-    return getRegBinaryAddress(arg0) + getRegBinaryAddress(arg1) + bin16(int(arg2))
-
-def createInstructionTypeJ(arg1):
-    pass
-
-
 
 
 # converts text in window to binary code
@@ -47,11 +35,27 @@ def convertAssemblyToBinary(assemblyCode, riscInstructions):
             binaryList.append(binary)
 
         if instruction[0] == 'J':
-
+            pass
 
     return binaryList
 
 
+
+def createInstructionTypeR(arg0, arg1, arg2):
+    return getRegBinaryAddress(arg0) + getRegBinaryAddress(arg1) + getRegBinaryAddress(arg2)
+
+# creates Instructions of type I
+def createInstructionTypeI(arg0, arg1, arg2):
+    bin16 = lambda x: ''.join(reversed([str((x >> i) & 1) for i in range(16)]))
+    return getRegBinaryAddress(arg0) + getRegBinaryAddress(arg1) + bin16(int(arg2))
+
+def createInstructionTypeJ(arg):
+    if isRegister(arg):
+        # implement function for jumpR which takes value from reg arg
+        pass
+    else:
+        # implement jump to given address
+        pass
 
 # calls convert assembly and creates the memory in vhdl
 def binaryToVHDLMemory(binaryCode):
@@ -71,11 +75,7 @@ def getRegBinaryAddress(regname):
 #     return bin16(int(number))
 
 def isRegister(register):
-    if register[0]:
+    if register[0].upper() == 'R':
         return True
     else:
         return False
-
-
-if __name__ == '__main__':
-    pass
