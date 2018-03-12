@@ -11,6 +11,7 @@ def writeMemory():
     # assemblyCode = text.get("1.0",END)
     assemblyCode = ['XOR r1, r2, r3', 'ADDI r3, r2, 100', 'JMP r4']
     binary = logic.convertAssemblyToBinary(assemblyCode, riscInstructions)
+    print(binary)
 
 
 

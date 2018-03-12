@@ -21,6 +21,7 @@ def convertAssemblyToBinary(assemblyCode, riscInstructions):
         # 1-> Instruction coodification
         instructionArray = i.split()
         instruction = riscInstructions[instructionArray[0]]
+        print(instruction[0])
         if instruction[0] == 'R':
             registerCode = createInstructionTypeR(instructionArray[1]
                                                   .replace(',', ''),
@@ -32,9 +33,16 @@ def convertAssemblyToBinary(assemblyCode, riscInstructions):
             binary = instruction[1] + registerCode
             binaryList.append(binary)
 
-        # if instruction[1] == 'I':
-        #     registerCode = createInstructionTypeI(instructionArray[1], instructionArray[2], instructionArray[3])
-        #     print(registerCode)
+        if instruction[0] == 'I':
+            registerCode = createInstructionTypeI(instructionArray[1]
+                                                  .replace(',', ''),
+                                                  instructionArray[2]
+                                                  .replace(',', ''),
+                                                  instructionArray[3]
+                                                  .replace(',', ''))
+            binary = instruction[1] + str(registerCode)
+            binaryList.append(binary)
+
     return binaryList
 
 
@@ -52,9 +60,9 @@ def getRegBinaryAddress(regname):
     else:
         return bin4(int(regname[(len(regname)-2):len(regname)]))
 
-def getBinaryOfNumber(number):
-    return lambda x: ''.join()
-
+# def getBinaryOfNumber(number):
+#     bin16 = lambda x: ''.join(reversed([str((x >> i) & 1) for i in range(16)]))
+#     return bin16(int(number))
 
 def isRegister(register):
     if register[0]:
