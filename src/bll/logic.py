@@ -1,7 +1,4 @@
-
-
-# creates Instructions of type R
-
+from math import sqrt
 
 # converts text in window to binary code
 def convertAssemblyToBinary(assemblyCode, riscInstructions):
@@ -10,9 +7,9 @@ def convertAssemblyToBinary(assemblyCode, riscInstructions):
         # 0 -> Instruction type
         # 1-> Instruction coodification
         instructionArray = i.split(' ')
-        print(instructionArray)
+        # print(instructionArray)
         instruction = riscInstructions[instructionArray[0]]
-        print(instruction[0])
+        # print(instruction[0])
         if instruction[0] == 'R':
             registerCode = createInstructionTypeR(instructionArray[1]
                                                   .replace(',', ''),
@@ -35,7 +32,9 @@ def convertAssemblyToBinary(assemblyCode, riscInstructions):
             binaryList.append(binary)
 
         if instruction[0] == 'J':
-            pass
+            code = createInstructionTypeJ(instructionArray[1])
+            binary = instruction[1] + str(code)
+            binaryList.append(binary)
 
     return binaryList
 
@@ -50,16 +49,47 @@ def createInstructionTypeI(arg0, arg1, arg2):
     return getRegBinaryAddress(arg0) + getRegBinaryAddress(arg1) + bin16(int(arg2))
 
 def createInstructionTypeJ(arg):
+    bin24 = lambda x: ''.join(reversed([str((x >> i) & 1) for i in range(24)]))
     if isRegister(arg):
-        # implement function for jumpR which takes value from reg arg
-        pass
+        if len(arg) == 2:
+            return bin24(int(arg[1]))
+        else:
+            return bin24(int(arg[(len(arg) - 2):len(arg)]))
     else:
-        # implement jump to given address
-        pass
+        return bin24(int(arg))
 
 # calls convert assembly and creates the memory in vhdl
-def binaryToVHDLMemory(binaryCode):
-    pass
+def binaryToVHDLMemory(binaryList, pathS, pathE):
+    text = open(pathS).read()
+    memoryContent = ''
+
+    memory_len = len(binaryList)
+    address_size = round(sqrt(memory_len))
+    for i in range(0, memory_len):
+        if (i == memory_len-1):
+            memoryContent = memoryContent + str(i) + '=>' \
+                            + '\"' + binaryList[i] + '\"'
+        else:
+            memoryContent = memoryContent + str(i) + '=>' \
+                            + '\"' + binaryList[i] + '\",\n'
+
+    binify = lambda x: ''.join(reversed([str((x >> i) & 1) for i in range(address_size)]))
+
+    memory_address = ''
+    for i in range(0, memory_len):
+        memory_address = memory_address + 'when' + '\"' \
+                         + binify(i) + '\"' + "=> data <= my_rom(" + str(i) + ");\n"
+    memory_address = memory_address + "when others => data <= \"00000000\";\n"
+
+    text = text.replace("ADDRESS_SIZE", str(address_size)). \
+        replace("MEMORY_LEN", str(memory_len)). \
+        replace("CONTENT", memoryContent). \
+        replace("CASE_ADDRESS", memory_address)
+
+    outputFile = open(pathE, "w")
+    outputFile.write(text)
+
+
 
 
 
@@ -68,7 +98,7 @@ def getRegBinaryAddress(regname):
     if len(regname) == 2:
         return bin4(int(regname[1]))
     else:
-        return bin4(int(regname[(len(regname)-2):len(regname)]))
+        return bin4(int(regname[(len(regname ) -2):len(regname)]))
 
 # def getBinaryOfNumber(number):
 #     bin16 = lambda x: ''.join(reversed([str((x >> i) & 1) for i in range(16)]))

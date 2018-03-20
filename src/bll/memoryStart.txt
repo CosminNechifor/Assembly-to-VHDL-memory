@@ -1,0 +1,20 @@
+library ieee;
+use ieee.std_logic_1164.all;
+
+entity ROM is
+  port ( address : in std_logic_vector(ADDRESS_SIZE downto 0);
+         data : out std_logic_vector(31 downto 0) );
+end entity ROM;
+
+architecture behavioral of ROM is
+  type mem is array ( 0 to MEMORY_LEN - 1) of std_logic_vector(31 downto 0);
+  constant my_Rom : mem := (
+    CONTENT);
+begin
+   process (address)
+   begin
+     case address is
+       CASE_ADDRESS
+	 end case;
+  end process;
+end architecture behavioral;
